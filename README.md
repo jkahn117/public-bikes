@@ -2,20 +2,101 @@
 
 public-bikes is a sample project that utilizes the [AWS Serverless Application Model (SAM)](https://aws.amazon.com/about-aws/whats-new/2016/11/introducing-the-aws-serverless-application-model/) in conjunction with Amazon ElastiCache to find nearby public bike stations.
 
+For more details on this project, please visit the accompanying blog post at XXX.
+
 ## Getting Started
 
-To get started, 
+To get started, clone this repository locally:
+
+```
+$ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/public-bikes
+```
+
+The repostiory contains [CloudFormation](https://aws.amazon.com/cloudformation/) templates and source code to deploy and run a complete sample application.
 
 
 ### Prerequisites
 
-To run the public-bikes sample application, you will need:
+To run the public-bikes sample application, you will need to:
 
-* AWS Account
-	* You must have permission to launch new resources (specifically DynamoDB, API Gateway, Lambda, and ElastiCache) as well as create IAM roles.
-* [AWS Command Line Interface (CLI)](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
+1. Select an AWS Region into which you will deploy services. Be sure that all required services (AWS Lambda, Amazon API Gateway, Amazon ElastiCache, Amazon DynamoDB) are available in the Region you select.
+2. Confirm your [installation](http://docs.aws.amazon.com/cli/latest/userguide/installing.html#install-bundle-other-os) of the AWS CLI is properly [configured](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration) with credentials that have administrator access to your AWS account.
 
+Locally, you will also need Node.js installed with NPM.  After cloing the repository, execute the following commands to install dependencies:
 
+```
+$ cd <CLONE_DIRECTORY>
+$ cd api && npm install
+$ cd ../stream && npm install
+$ cd ..
+```
+
+## Deploy AWS Resources
+
+The deployment of our AWS resources has been broken into two CloudFormation templates.  The first of which contains network resources, including VPC, Subnets, and Gateways.  While not strictly necessary in this example, utilizing VPC is intended to help secure our deployment.
+
+1. Deploy the network stack (network.yaml) via the AWS CLI:
+    ```
+    $ aws cloudformation deploy --template <CLONE_DIRECTORY>/network.yaml --stack-name public-bikes-network
+    ```
+2. Once stack creation is complete, we need to retreive the values of two of the outputs from the network stack, `oPrivateSubnet1` and `oFunctionSecurityGroup`.
+3. Copy or rename the example SAM template (`app-sam.example.yaml`) to `app-sam.yaml`.
+4. Open `app-sam.yaml` in your favorite text editor and replace all instances of (note: future versions of this sample will not require this manual find/replace):
+    * `<SECURITY_GROUP>` with value of `oFunctionSecurityGroup`
+    * `<SUBNET>` with value of `oPrivateSubnet1`
+5. Create a new S3 bucket from which to deploy our source code:
+    ```
+    $ aws s3 mb <MY_BUCKET_NAME>
+    ```
+6. Using the SAM, package your source code and serverless stack:
+    ```
+    $ aws cloudformation package --template-file app-sam.yaml --s3-bucket <MY_BUCKET_NAME> --output-template-file app-sam-output.yaml
+    ```
+7. Once packaging is complete, deploy the stack (note: this step may require 10-15 minutes as ElastiCache is deployed):
+    ```
+    $ aws cloudformation deploy --template-file app-sam-output.yaml --stack-name public-bikes-dev --capabilities CAPABILITY_IAM
+    ```
+8. After your stack has been created, the sample API has been deployed and you can retrieve the domain of the API (going forward, we will refer to it as API_DOMAIN):
+    ```
+    $ aws cloudformation describe-stacks --stack-name public-bikes-dev --query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue'
+    ```
+
+## Data Preparation
+
+For our sample application, we have included a special API endpoint that retrieves sample data (for Chicago's Divvy bike share) and loads it to DynamoDB.  To load the data to your environment:
+
+```
+$ curl https://<API_DOMAIN>/Stage/stations/setup
+```
+
+## Testing Our Service
+
+Now that we have deployed all of our AWS resources and loaded a small set of sample data, we can test our service by passing a latitude and longitude in downtown Chicago:
+
+```
+$ curl –L 'https://<API_DOMAIN>/Stage/stations?latitude=41.8802596&longitude=-87.6346818'
+```
+
+The resulting response will contain the 10 closest Divvy bike locations to the passed coordinates, including the distance (in miles) and coordinates of the station:
+
+```
+[{
+    "name": "Chicago-18",
+    "distance": "0.2484",
+    "coordinates": {
+        "latitude": "41.88327238502640881",
+        "longitude": "-87.63731449842453003"
+    }
+}, {
+    "name": "Chicago-5",
+    "distance": "0.5589",
+    "coordinates": {
+        "latitude": "41.87405360416989453",
+        "longitude": "-87.62771755456924438"
+    }
+...
+]
+```
 
 ## Authors
 
