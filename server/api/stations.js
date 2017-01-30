@@ -68,8 +68,6 @@ module.exports.list = (event, context, callback) => {
             return;
           }
 
-          console.log(reply);
-
           var stations = reply.map( (r) => {
             return {
               name: r[0],
