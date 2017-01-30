@@ -1,3 +1,4 @@
 api/node_modules
 stream/node_modules
 app-sam-output.yaml
+app-sam.yaml
