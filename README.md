@@ -25,7 +25,7 @@ To run the public-bikes sample application, you will need to:
 Locally, you will also need Node.js installed with NPM.  After cloing the repository, execute the following commands to install dependencies:
 
 ```
-$ cd <CLONE_DIRECTORY>
+$ cd <CLONE_DIRECTORY>/server
 $ cd api && npm install
 $ cd ../stream && npm install
 $ cd ..
