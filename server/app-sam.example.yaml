@@ -64,7 +64,7 @@ Resources:
   #
   # Stream Processor
   #
-  StreamProcessor:
+  StreamProcessorFunction:
     Type: "AWS::Serverless::Function"
     Properties:
       Handler: "index.handler"
@@ -154,9 +154,9 @@ Resources:
 # Outputs
 #
 Outputs:
-  ApiUrl:
-    Description: "URL for API"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev"
+  ApiDomain:
+    Description: "API Domain"
+    Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
   CacheEndpoint:
     Description: "ElastiCache Endpoint"
     Value:
