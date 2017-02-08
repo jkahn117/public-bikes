@@ -73,8 +73,8 @@ module.exports.list = (event, context, callback) => {
               name: r[0],
               distance: r[1],
               coordinates: {
-                latitude: r[2][1],
-                longitude: r[2][0]
+                latitude:  Number(r[2][1]),
+                longitude: Number(r[2][0])
               } }
           });
 
