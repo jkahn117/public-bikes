@@ -12,7 +12,7 @@ To get started, clone this repository locally:
 $ git clone https://github.com/jkahn117/public-bikes.git
 ```
 
-The repostiory contains [CloudFormation](https://aws.amazon.com/cloudformation/) templates and source code to deploy and run a complete sample application.
+The repository contains [CloudFormation](https://aws.amazon.com/cloudformation/) templates and source code to deploy and run a complete sample application.
 
 
 ### Prerequisites
