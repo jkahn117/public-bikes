@@ -34,7 +34,7 @@ const buildResponse = (statusCode, body) => {
 
  Sample request query string:
 
-  latitude=42.1275&longitude=-87.8289
+  latitude=41.8802596&longitude=-87.6346818
 
  */
 module.exports.list = (event, context, callback) => {
@@ -71,7 +71,7 @@ module.exports.list = (event, context, callback) => {
           var stations = reply.map( (r) => {
             return {
               name: r[0],
-              distance: r[1],
+              distance: `${r[1]} ${listSearchRadiusUnits}`,
               coordinates: {
                 latitude:  Number(r[2][1]),
                 longitude: Number(r[2][0])
@@ -102,7 +102,6 @@ const getStationData = (url) => new Promise( (resolve, reject) => {
     response.on( 'end', () => {
       try {
         const json = JSON.parse(data.join(""));
-        console.log(json);
         resolve(json);
       } catch (error) {
         reject(error)

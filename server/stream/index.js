@@ -31,19 +31,19 @@ const removeRecord = (client, recordId) => {
 };
 
 //----
-const updateRecord = (client, key, record) => {
+const updateRecord = (client, recordId, record) => {
   return new Promise( (resolve, reject) => {
 
     client.send_command('GEOADD',
       [ 'public-bikes:stations',
         record.longitude.N,
         record.latitude.N,
-        key ], (error, reply) => {
+        recordId ], (error, reply) => {
           if (error) {
             reject(error);
           }
           else {
-            console.log("Inserted new entry in cache for " + key + " { lat:" + record.latitude.N + ", lon: " + record.longitude.N + " }" );
+            console.log("Inserted new entry in cache for " + recordId + " { lat:" + record.latitude.N + ", lon: " + record.longitude.N + " }" );
             resolve(reply);
           }
         });
@@ -62,24 +62,20 @@ exports.handler = (event, context, callback) => {
   });
 
   Promise.all( event.Records.map( (record) => {
-    var key = record.dynamodb.Keys.uuid.S;
+    var station = (record.eventName == "REMOVE") ? record.dynamodb.OldImage : record.dynamodb.NewImage;
+    var stationId = `${station.name.S}-${station.city.S}`;
 
     if (record.eventName == "REMOVE") {
-      return removeRecord(client, key);
+      return removeRecord(client, stationId);
     }
     else {
-      return updateRecord(client, key, record.dynamodb.NewImage);  
+      return updateRecord(client, stationId, station);
     }
-
   })).then( () => {
-
     client.quit(); // be sure to quit or function will not return
     console.log("Processed " + event.Records.length + " records");
-
   }).catch( (error) => {
-
     console.error("[ERROR - stream#handler]: " + error);
-
   });;
 
 };
