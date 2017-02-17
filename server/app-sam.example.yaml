@@ -107,7 +107,7 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       StreamSpecification:
-        StreamViewType: "NEW_IMAGE" # pass the new item to the stream processor
+        StreamViewType: "NEW_AND_OLD_IMAGES"
       TableName: "public-bikes"
       
 
