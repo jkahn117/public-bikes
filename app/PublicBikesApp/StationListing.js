@@ -26,14 +26,16 @@ class StationListing extends Component {
 
   //----
   _renderRow(station, rowId) {
+    var stationName = station.name.split('-')[0];
+
     return (
         <TouchableHighlight onPress={() => this._rowPressed(station.name)}
             underlayColor='#dddddd'>
           <View>
             <View style={styles.horizontal}>
               <View style={styles.textContainer}>
-                <Text style={styles.name}>{station.name}</Text>
-                <Text style={styles.distance}>{station.distance} miles</Text>
+                <Text style={styles.name}>{stationName}</Text>
+                <Text style={styles.distance}>{station.distance}</Text>
               </View>
             </View>
 

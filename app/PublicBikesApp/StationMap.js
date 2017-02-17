@@ -51,8 +51,8 @@ class StationMap extends Component {
 
             <MapView.Marker
               key={station.name}
-              title={station.name}
-              description={station.distance + " miles"}
+              title={station.name.split('-')[0]}
+              description={station.distance}
               coordinate={station.coordinates} />
 
           ))}
