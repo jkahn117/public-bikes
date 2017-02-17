@@ -36,27 +36,37 @@ $ cd ..
 The deployment of our AWS resources has been broken into two CloudFormation templates.  The first of which contains network resources, including VPC, Subnets, and Gateways.  While not strictly necessary in this example, utilizing VPC is intended to help secure our deployment.
 
 1. Deploy the network stack (network.yaml) via the AWS CLI:
+
     ```
     $ aws cloudformation deploy --template <CLONE_DIRECTORY>/network.yaml --stack-name public-bikes-network
     ```
+
 2. Once stack creation is complete, we need to retreive the values of two of the outputs from the network stack, `oPrivateSubnet1` and `oFunctionSecurityGroup`.
+
 3. Copy or rename the example SAM template (`app-sam.example.yaml`) to `app-sam.yaml`.
+
 4. Open `app-sam.yaml` in your favorite text editor and replace all instances of (note: future versions of this sample will not require this manual find/replace):
+
     * `<SECURITY_GROUP>` with value of `oFunctionSecurityGroup`
     * `<SUBNET>` with value of `oPrivateSubnet1`
+
 5. Create a new S3 bucket from which to deploy our source code:
+
     ```
     $ aws s3 mb <MY_BUCKET_NAME>
     ```
 6. Using the SAM, package your source code and serverless stack:
+
     ```
     $ aws cloudformation package --template-file app-sam.yaml --s3-bucket <MY_BUCKET_NAME> --output-template-file app-sam-output.yaml
     ```
 7. Once packaging is complete, deploy the stack (note: this step may require 10-15 minutes as ElastiCache is deployed):
+
     ```
     $ aws cloudformation deploy --template-file app-sam-output.yaml --stack-name public-bikes-dev --capabilities CAPABILITY_IAM
     ```
 8. After your stack has been created, the sample API has been deployed and you can retrieve the domain of the API (going forward, we will refer to it as API_DOMAIN):
+
     ```
     $ aws cloudformation describe-stacks --stack-name public-bikes-dev --query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue'
     ```
@@ -81,15 +91,15 @@ The resulting response will contain the 10 closest Divvy bike locations to the p
 
 ```
 [{
-    "name": "Chicago-18",
-    "distance": "0.2484",
+    "name": "Wacker Dr & Washington St-Chicago",
+    "distance": "0.2484 mi",
     "coordinates": {
         "latitude": "41.88327238502640881",
         "longitude": "-87.63731449842453003"
     }
 }, {
-    "name": "Chicago-5",
-    "distance": "0.5589",
+    "name": "State St & Harrison St-Chicago",
+    "distance": "0.5589 mi",
     "coordinates": {
         "latitude": "41.87405360416989453",
         "longitude": "-87.62771755456924438"
