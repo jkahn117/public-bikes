@@ -154,17 +154,6 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet1
 
-
-  ## temp ##
-
-  FunctionSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
-    Properties:
-      GroupDescription: "public-bikes - Lambda Function Security Group"
-      VpcId: !Ref VPC
-
-  ## end temp ##
-
 Outputs:
   oVPC:
     Value: !Ref VPC
@@ -177,9 +166,3 @@ Outputs:
     Description: "public-bikes Private Subnet 1"
     Export:
       Name: "public-bikes-private-subnet"
-
-  oFunctionSecurityGroup:
-    Value: !Ref FunctionSecurityGroup
-    Description: "public-bikes Serverless Function Security Group"
-    Export:
-      Name: "public-bikes-serverless-function-sg"

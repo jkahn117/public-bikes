@@ -19,9 +19,9 @@ Resources:
       Policies: "AWSLambdaVPCAccessExecutionRole"
       VpcConfig:
         SecurityGroupIds:
-          - "<SECURITY_GROUP>"
+          - !Ref FunctionSecurityGroup
         SubnetIds:
-          - "<SUBNET>"
+          - !ImportValue "public-bikes-private-subnet"
       Timeout: 6
       Environment:
         Variables:
@@ -73,9 +73,9 @@ Resources:
       Policies: "AWSLambdaVPCAccessExecutionRole"
       VpcConfig:
         SecurityGroupIds:
-          - "<SECURITY_GROUP>"
+          - !Ref FunctionSecurityGroup
         SubnetIds:
-          - "<SUBNET>"
+          - !ImportValue "public-bikes-private-subnet"
       Environment:
         Variables:
           ELASTICACHE_HOST:
@@ -134,7 +134,7 @@ Resources:
           IpProtocol: "tcp"
           FromPort: 6379
           ToPort: 6379
-          SourceSecurityGroupId: "<SECURITY_GROUP>"
+          SourceSecurityGroupId: !Ref FunctionSecurityGroup
 
   ECSubnetGroup:
     Type: "AWS::ElastiCache::SubnetGroup"
