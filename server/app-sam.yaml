@@ -33,7 +33,7 @@ Resources:
           SEARCH_RADIUS_UNITS: "mi"  # or 'km', 'm', 'ft'
           RESULT_COUNT: 10
       Events:
-        ListCheckins:
+        ListStations:
           Type: "Api"
           Properties:
             Path: "/stations"
@@ -55,7 +55,7 @@ Resources:
           TABLE_NAME: !Ref DDBTable
           DATA_URL: "https://feeds.divvybikes.com/stations/stations.json"
       Events:
-        CreateCheckin:
+        SetupStations:
           Type: "Api"
           Properties:
             Path: "/stations/setup"
