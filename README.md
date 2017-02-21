@@ -67,7 +67,7 @@ The deployment of our AWS resources has been broken into two CloudFormation temp
 For our sample application, we have included a special API endpoint that retrieves sample data (for Chicago's Divvy bike share) and loads it to DynamoDB.  To load the data to your environment:
 
 ```
-$ curl https://<API_DOMAIN>/Stage/stations/setup
+$ curl https://<API_DOMAIN>/Prod/stations/setup
 ```
 
 ## Testing Our Service
@@ -75,7 +75,7 @@ $ curl https://<API_DOMAIN>/Stage/stations/setup
 Now that we have deployed all of our AWS resources and loaded a small set of sample data, we can test our service by passing a latitude and longitude in downtown Chicago:
 
 ```
-$ curl –L 'https://<API_DOMAIN>/Stage/stations?latitude=41.8802596&longitude=-87.6346818'
+$ curl –L 'https://<API_DOMAIN>/Prod/stations?latitude=41.8802596&longitude=-87.6346818'
 ```
 
 The resulting response will contain the 10 closest Divvy bike locations to the passed coordinates, including the distance (in miles) and coordinates of the station:
