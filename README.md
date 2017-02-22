@@ -21,14 +21,19 @@ To run the public-bikes sample application, you will need to:
 
 1. Select an AWS Region into which you will deploy services. Be sure that all required services (AWS Lambda, Amazon API Gateway, Amazon ElastiCache, Amazon DynamoDB) are available in the Region you select.
 2. Confirm your [installation](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) of the latest AWS CLI (at least version 1.11.21).
-3. Confirm the CLI is properly [configured](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration) with credentials that have administrator access to your AWS account.
+3. Confirm the AWS CLI is properly [configured](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration) with credentials that have administrator access to your AWS account.
+4. [Install Node.js and NPM](https://docs.npmjs.com/getting-started/installing-node).
 
-Locally, you will also need Node.js installed with NPM.  After cloning the repository, execute the following commands to install dependencies:
+## Setting Up the Environment
+
+Before deploying the sample, install several dependencies using NPM:
 
 ```
-$ cd <CLONE_DIRECTORY>/server
-$ cd api && npm install
-$ cd ../stream && npm install
+$ cd public-bikes/server
+$ cd api
+$ npm install
+$ cd ../stream
+$ npm install
 $ cd ..
 ```
 
@@ -39,7 +44,7 @@ The deployment of our AWS resources has been broken into two CloudFormation temp
 1. Deploy the network stack (network.yaml) via the AWS CLI:
 
     ```
-    $ aws cloudformation deploy --template <CLONE_DIRECTORY>/network.yaml --stack-name public-bikes-network
+    $ aws cloudformation deploy --template network.yaml --stack-name public-bikes-network
     ```
 
 2. Create a new S3 bucket from which to deploy our source code (ensure that the bucket is created in the same AWS Region as your network and services will be deployed):
@@ -99,6 +104,17 @@ The resulting response will contain the 10 closest Divvy bike locations to the p
 ...
 ]
 ```
+
+## Cleaning Up
+
+Finally, we will clean up the AWS environment using CloudFormation:
+
+```
+$ aws cloudformation delete-stack --stack-name public-bikes-dev
+
+$ aws cloudformation delete-stack --stack-name public-bikes-network
+```
+
 
 ## Authors
 
