@@ -20,8 +20,8 @@ The repository contains [CloudFormation](https://aws.amazon.com/cloudformation/)
 To run the public-bikes sample application, you will need to:
 
 1. Select an AWS Region into which you will deploy services. Be sure that all required services (AWS Lambda, Amazon API Gateway, Amazon ElastiCache, Amazon DynamoDB) are available in the Region you select.
-2. Confirm your [installation](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) of the latest AWS CLI (at least version 1.11.21).
-3. Confirm the AWS CLI is properly [configured](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration) with credentials that have administrator access to your AWS account.
+2. Confirm your [installation of the latest AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) (at least version 1.11.21).
+3. Confirm the [AWS CLI is properly configured](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration) with credentials that have administrator access to your AWS account.
 4. [Install Node.js and NPM](https://docs.npmjs.com/getting-started/installing-node).
 
 ## Setting Up the Environment
