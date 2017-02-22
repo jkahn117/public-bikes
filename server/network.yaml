@@ -30,20 +30,20 @@ Parameters:
     Type: "String"
     Default: "public-bikes-vpc"
   pVpcCIDR:
-    Description: "CIDR block for VPC"
+    Description: "CIDR block for VPC (recommend /16)"
     Type: "String"
-    Default: "10.100.0.0/20"
+    Default: "10.100.0.0/16"
   pPrivateSubnet1CIDR:
     Description: "CIDR block for Private Subnet"
     Type: "String"
-    Default: "10.100.0.0/22"
+    Default: "10.100.0.0/18"
   pPublicSubnet1CIDR:
     Description: "CIDR block for Public Subnet"
     Type: "String"
-    Default: "10.100.4.0/22"
+    Default: "10.100.64.0/18"
 
-    ## private subnet 2: 10.100.8.0/22
-    ## public subnet 2: 10.100.12.0/22
+    ## private subnet 2: 10.100.128.0/18
+    ## public subnet 2: 10.100.192.0/18
 
 Resources:
   VPC:
@@ -60,6 +60,7 @@ Resources:
   PrivateSubnet1:
     Type: "AWS::EC2::Subnet"
     Properties:
+      AvailabilityZone: !Select [0, !GetAZs ""]
       CidrBlock: !Ref "pPrivateSubnet1CIDR"
       VpcId: !Ref VPC
       Tags:
@@ -72,6 +73,7 @@ Resources:
   PublicSubnet1:
     Type: "AWS::EC2::Subnet"
     Properties:
+      AvailabilityZone: !Select [0, !GetAZs ""]
       CidrBlock: !Ref "pPublicSubnet1CIDR"
       VpcId: !Ref VPC
       Tags:
