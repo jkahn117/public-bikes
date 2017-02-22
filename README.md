@@ -20,9 +20,10 @@ The repository contains [CloudFormation](https://aws.amazon.com/cloudformation/)
 To run the public-bikes sample application, you will need to:
 
 1. Select an AWS Region into which you will deploy services. Be sure that all required services (AWS Lambda, Amazon API Gateway, Amazon ElastiCache, Amazon DynamoDB) are available in the Region you select.
-2. Confirm your [installation](http://docs.aws.amazon.com/cli/latest/userguide/installing.html#install-bundle-other-os) of the AWS CLI is properly [configured](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration) with credentials that have administrator access to your AWS account.
+2. Confirm your [installation](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) of the latest AWS CLI (at least version 1.11.21).
+3. Confirm the CLI is properly [configured](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-quick-configuration) with credentials that have administrator access to your AWS account.
 
-Locally, you will also need Node.js installed with NPM.  After cloing the repository, execute the following commands to install dependencies:
+Locally, you will also need Node.js installed with NPM.  After cloning the repository, execute the following commands to install dependencies:
 
 ```
 $ cd <CLONE_DIRECTORY>/server
@@ -41,10 +42,10 @@ The deployment of our AWS resources has been broken into two CloudFormation temp
     $ aws cloudformation deploy --template <CLONE_DIRECTORY>/network.yaml --stack-name public-bikes-network
     ```
 
-2. Create a new S3 bucket from which to deploy our source code:
+2. Create a new S3 bucket from which to deploy our source code (ensure that the bucket is created in the same AWS Region as your network and services will be deployed):
 
     ```
-    $ aws s3 mb <MY_BUCKET_NAME>
+    $ aws s3 mb s3://<MY_BUCKET_NAME>
     ```
 3. Using the SAM, package your source code and serverless stack:
 
@@ -59,7 +60,7 @@ The deployment of our AWS resources has been broken into two CloudFormation temp
 5. After your stack has been created, the sample API has been deployed and you can retrieve the domain of the API (going forward, we will refer to it as API_DOMAIN):
 
     ```
-    $ aws cloudformation describe-stacks --stack-name public-bikes-dev --query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue'
+    $ aws cloudformation describe-stacks --stack-name public-bikes-dev --query 'Stacks[0].Outputs[?OutputKey==`ApiDomain`].OutputValue'
     ```
 
 ## Data Preparation
@@ -85,15 +86,15 @@ The resulting response will contain the 10 closest Divvy bike locations to the p
     "name": "Wacker Dr & Washington St-Chicago",
     "distance": "0.2484 mi",
     "coordinates": {
-        "latitude": "41.88327238502640881",
-        "longitude": "-87.63731449842453003"
+        "latitude": 41.88327238502640881,
+        "longitude": -87.63731449842453003
     }
 }, {
     "name": "State St & Harrison St-Chicago",
     "distance": "0.5589 mi",
     "coordinates": {
-        "latitude": "41.87405360416989453",
-        "longitude": "-87.62771755456924438"
+        "latitude": 41.87405360416989453,
+        "longitude": -87.62771755456924438
     }
 ...
 ]
