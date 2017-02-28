@@ -9,11 +9,12 @@ import {
   Text,
   Button
 } from 'react-native'
+import Config from 'react-native-config';
 
 const StationListing = require("./StationListing");
 const StationMap = require("./StationMap");
 
-const PublicBikeServiceUrl = "https://1k0fwsw3y1.execute-api.us-east-1.amazonaws.com/Stage/stations";
+const PublicBikeServiceUrl = Config.BIKE_SERVICE_ENDPOINT;
 
 /**
 
