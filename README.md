@@ -2,7 +2,7 @@
 
 public-bikes is a sample project that utilizes the [AWS Serverless Application Model (SAM)](https://aws.amazon.com/about-aws/whats-new/2016/11/introducing-the-aws-serverless-application-model/) in conjunction with Amazon ElastiCache to find nearby public bike stations.
 
-For more details on this project, please visit the accompanying blog post at XXX.
+For more details on this project, please visit the accompanying [blog post](https://aws.amazon.com/blogs/database/amazon-elasticache-utilizing-redis-geospatial-capabilities/).
 
 ## Getting Started
 
